@@ -29,7 +29,7 @@ pipeline {
     }
     post {
         always {
-            sh 'echo "Pipeline complete"'
+            sh 'echo "Pipeline is complete"'
         }
     }
 }
