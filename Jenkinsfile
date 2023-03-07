@@ -1,28 +1,35 @@
-pipeline { 
-  
-   agent any
-
-   stages {
-   
-     stage('Install Dependencies') { 
-        steps { 
-           sh 'tree install' 
+pipeline {
+    agent any
+    
+    stages {
+        stage('Build') {
+            steps {
+                sh 'echo "Building..."'
+            }
         }
-     }
-     
-     stage('Test') { 
-        steps { 
-           sh 'echo "testing application..."'
+        stage('Test') {
+            steps {
+                sh 'echo "Testing..."'
+            }
         }
-      }
-
-         stage("Deploy application") { 
-         steps { 
-           sh 'echo "deploying application..."'
-         }
-
-     }
-  
-   	}
-
-   }
+        stage('Deploy') {
+            parallel {
+                stage('Deploy to Staging') {
+                    steps {
+                        sh 'echo "Deploying to staging..."'
+                    }
+                }
+                stage('Deploy to Production') {
+                    steps {
+                        sh 'echo "Deploying to production..."'
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            sh 'echo "Pipeline complete"'
+        }
+    }
+}
